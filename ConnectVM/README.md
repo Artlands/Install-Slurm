@@ -1,4 +1,4 @@
-## Prequisites
+### Prequisites
 1. [VirtualBox](virtualbox.org/wiki/Downloads)
 2. [CentOS 7.7](http://repo1.dal.innoscale.net/centos/7.7.1908/isos/x86_64/) (minimal version)
 
@@ -43,9 +43,9 @@ ip addr show
 Try to communicate within the internal network among machines
 
 On master node: `ping 10.0.1.6`, `ping 10.0.1.7`
-On computing node[1-2]: ping 10.0.1.5
-```
+On computing node[1-2]: `ping 10.0.1.5`
 
+We have established the ability to ping from one machine to the other machine.
 
-
+Reference: [slothparadise.com](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
 
