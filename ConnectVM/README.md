@@ -15,9 +15,19 @@ VBoxManage dhcpserver add --netname intnet --ip 10.0.1.1 --netmask 255.255.255.0
 
 2. Setup the internet connection on each virtual machine
 
-```nmcli d```
+```
+nmcli d
+```
 
-Show `enp0s3`, `enp0s8`, `enp0s8` will be connected, `enp0s3` will be disconnected.
+Show "enp0s3", "enp0s8". "enp0s8" will be connected, "enp0s3" will be disconnected.
+
+```
+vi /etc/sysconfig/network-scripts/ifcfg-enp0s3
+```
+Change ONBOOT=yes
+```
+ONBOOT=yes
+```
 
 
 
