@@ -94,7 +94,7 @@ cp id_rsa id_rsa.pub ~/.ssh
 Copy `id_rsa.pub` to the `authorized_kyes` to allow __master__ to be able to SSH to __node[1-2]__ without a password.
 
 ```
-cd ~/.ssh'
+cd ~/.ssh
 cp id_rsa.pub authorized_keys
 ```
 
