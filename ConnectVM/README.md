@@ -24,10 +24,28 @@ Show "enp0s3", "enp0s8". "enp0s8" will be connected, "enp0s3" will be disconnect
 ```
 vi /etc/sysconfig/network-scripts/ifcfg-enp0s3
 ```
+
 Change ONBOOT=yes
 ```
 ONBOOT=yes
+
 ```
+Restart network
+```
+systemctl restart network
+```
+
+Show IP addresses
+```
+ip addr show
+```
+
+Try to communicate within the internal network among machines
+
+On master node: `ping 10.0.1.6`, `ping 10.0.1.7`
+On computing node[1-2]: ping 10.0.1.5
+```
+
 
 
 
