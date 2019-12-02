@@ -9,34 +9,33 @@ Set Network Adapter 1 to `NAT`, Adapter 2 to `Internal Network`
 1. Create an Inernal Network with VirtualBox's built-in command. It will mimic DHCP server.
 
 In terminal, type:
-```
+```bash
 VBoxManage dhcpserver add --netname intnet --ip 10.0.1.1 --netmask 255.255.255.0 --lowerip 10.0.1.2 --upperip 10.0.1.200 --enable
 ```
 
 2. Setup the internet connection on each virtual machine
 
-```
+```bash
 nmcli d
 ```
 
 Show "enp0s3", "enp0s8". "enp0s8" will be connected, "enp0s3" will be disconnected.
 
-```
+```bash
 vi /etc/sysconfig/network-scripts/ifcfg-enp0s3
 ```
 
 Change ONBOOT=yes
-```
+```bash
 ONBOOT=yes
-
 ```
 Restart network
-```
+```bash
 systemctl restart network
 ```
 
 Show IP addresses
-```
+```bash
 ip addr show
 ```
 
@@ -46,6 +45,16 @@ On master node: `ping 10.0.1.6`, `ping 10.0.1.7`
 On computing node[1-2]: `ping 10.0.1.5`
 
 We have established the ability to ping from one machine to the other machine.
+
+### Setting up SSH Keys
+
+On __master__, create the ~/.ssh folder.
+
+```bash
+mkdir ~/.ssh
+```
+
+
 
 Reference: [slothparadise.com](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
 
