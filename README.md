@@ -1,9 +1,7 @@
 ## Preparation
 [Connect Virtual Machines](https://github.com/Artlands/Install-Slurm/tree/master/ConnectVM)
 
-[Setup NFS Server][]
-
-[Reference][https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/]
+[Setup NFS Server](https://github.com/Artlands/Install-Slurm/tree/master/Setup_NFS)
 
 List of master node and computing nodes within the cluster.
 
