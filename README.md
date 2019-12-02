@@ -1,8 +1,9 @@
-## Preparation
-[Connect Virtual Machines](https://github.com/Artlands/Install-Slurm/tree/master/ConnectVM)
+### Preparation
+1. [Connect Virtual Machines](https://github.com/Artlands/Install-Slurm/tree/master/Connect_VM)
 
-[Setup NFS Server](https://github.com/Artlands/Install-Slurm/tree/master/Setup_NFS)
+2. [Setup NFS Server](https://github.com/Artlands/Install-Slurm/tree/master/Setup_NFS)
 
+### Cluster Server and Computing Nodes
 List of master node and computing nodes within the cluster.
 
 |Hostname|IP Addr |
