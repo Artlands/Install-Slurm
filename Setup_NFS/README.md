@@ -107,5 +107,5 @@ Every time we restart the __node[1-2]__, we can re-mount the NFS shared folder b
 mount -a
 ```
 
-Reference: [slothparadise.com](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
+Reference: [slothparadise](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
 

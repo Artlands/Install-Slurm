@@ -100,5 +100,5 @@ cp id_rsa.pub authorized_keys
 
 We should be able to ssh form __master__ to __node[1-2]__ without a password and vice versa.
 
-Reference: [slothparadise.com](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
+Reference: [slothparadise](https://www.slothparadise.com/how-to-connect-virtual-machines-and-setup-nfs-server-part-1/)
 
