@@ -13,28 +13,28 @@ In terminal, type:
 VBoxManage dhcpserver add --netname intnet --ip 10.0.1.1 --netmask 255.255.255.0 --lowerip 10.0.1.2 --upperip 10.0.1.200 --enable
 ```
 
-2. Setup the internet connection on each virtual machine
+2. Setup the internet connection on each virtual machine:
 
 ``` 
 nmcli d
 ```
 
-Show "enp0s3", "enp0s8". "enp0s8" will be connected, "enp0s3" will be disconnected.
+Show "enp0s3", "enp0s8". "enp0s8" will be connected, "enp0s3" will be disconnected:
 
 ``` 
 vi /etc/sysconfig/network-scripts/ifcfg-enp0s3
 ```
 
-Change ONBOOT=yes
+Change ONBOOT=yes:
 ``` 
 ONBOOT=yes
 ```
-Restart network
+Restart network:
 ``` 
 systemctl restart network
 ```
 
-Show IP addresses
+Show IP addresses:
 ``` 
 ip addr show
 ```
@@ -48,7 +48,7 @@ We have established the ability to ping from one machine to the other machine.
 
 ### Setting up SSH Keys
 
-On __master__, create the ~/.ssh folder.
+On __master__, create the ~/.ssh folder:
 
 ``` 
 mkdir ~/.ssh
@@ -66,32 +66,32 @@ Enter passphrase (empty for no passphrase): [Type a passphrase]
 Enter same passphrase again: [Type passphrase again]
 ```
 
-We will copy the public key `id_rsa.pub` to `authorized_keys` to enable this key for access to __master__.
+We will copy the public key `id_rsa.pub` to `authorized_keys` to enable this key for access to __master__:
 
 ```
 cp id_rsa.pub authorized_keys
 ```
 
-Send the private key `id_rsa` and public key `id_rsa.pub` from __master__ to __node[1-2]__.
+Send the private key `id_rsa` and public key `id_rsa.pub` from __master__ to __node[1-2]__:
 
 ```
 scp ~/.ssh/id_rsa ~/.ssh/id_rsa.pub root@10.0.1.6:
 scp ~/.ssh/id_rsa ~/.ssh/id_rsa.pub root@10.0.1.7:
 ```
 
-Make the ~/.ssh directory on __node[1-2]__.
+Make the ~/.ssh directory on __node[1-2]__:
 
 ```
 mkdir ~/.ssh
 ```
 
-Copy the `id_rsa` and `id_rsa.pub` to the ~/.ssh folder.
+Copy the `id_rsa` and `id_rsa.pub` to the ~/.ssh folder:
 
 ```
 cp id_rsa id_rsa.pub ~/.ssh
 ```
 
-Copy `id_rsa.pub` to the `authorized_kyes` to allow __master__ to be able to SSH to __node[1-2]__ without a password.
+Copy `id_rsa.pub` to the `authorized_kyes` to allow __master__ to be able to SSH to __node[1-2]__ without a password:
 
 ```
 cd ~/.ssh
