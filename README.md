@@ -14,19 +14,19 @@ List of master node and computing nodes within the cluster.
 
 ### (Optional) Delete failed installation of Slurm
 
-Remove database.
+Remove database:
 
 ```
 yum remove mariadb-server mariadb-devel -y
 ```
 
-Remove Slurm and Munge.
+Remove Slurm and Munge:
 
 ```
 yum remove slurm munge munge-libs munge-devel -y
 ```
 
-Delete the users and corresponding folders.
+Delete the users and corresponding folders:
 
 ```
 userdel -r slurm
@@ -48,19 +48,19 @@ useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u $SLURMUSER -g slurm
 
 ### Install Munge
 
-Get the latest REPL repository.
+Get the latest REPL repository:
 
 ```
 yum install epel-release -y
 ```
 
-Install Munge.
+Install Munge:
 
 ```
 yum install munge munge-libs munge-devel -y
 ```
 
-Create a secret key on __master__ node. First install rig-tools to properly create the key.
+Create a secret key on __master__ node. First install rig-tools to properly create the key:
 
 ```
 yum install rng-tools -y
@@ -71,14 +71,14 @@ chown munge: /etc/munge/munge.key
 chmod 400 /etc/munge/munge.key
 ```
 
-Send this key to all of the compute nodes.
+Send this key to all of the compute nodes:
 
 ```
 scp /etc/munge/munge.key root@10.0.1.6:/etc/munge
 scp /etc/munge/munge.key root@10.0.1.7:/etc/munge
 ```
 
-SSH into every node and correct the permissions as well as start the Munge service.
+SSH into every node and correct the permissions as well as start the Munge service:
 
 ```
 chown -R munge: /etc/munge/ /var/log/munge/
@@ -90,7 +90,7 @@ systemctl enable munge
 systemctl start munge
 ```
 
-To test Munge, try to access another node with Munge from __master__ node.
+To test Munge, try to access another node with Munge from __master__ node:
 
 ```
 munge -n
@@ -103,53 +103,52 @@ If you encounter no errors, then Munge is working as expected.
 
 ### Install Slurm
 
-Install a few dependencies.
+Install a few dependencies:
 
 ```
 yum install openssl openssl-devel pam-devel numactl numactl-devel hwloc hwloc-devel lua lua-devel readline-devel rrdtool-devel ncurses-devel man2html libibmad libibumad -y
 ```
 
-Download the latest version of Slurm in the shared folder.
+Download the latest version of Slurm in the shared folder:
 
 ```
 cd /nfsshare
 wget https://download.schedmd.com/slurm/slurm-19.05.4.tar.bz2
 ```
 
-If you don't have `rpmbuild` yet.
+If you don't have `rpmbuild` yet:
 
 ```
 yum install rpm-build
 rpmbuild -ta slurm-19.05.4.tar.bz2
 ```
 
-Check the rpms created by `rpmbuild`.
+Check the rpms created by `rpmbuild`:
 
 ```
 cd /root/rpmbuild/RPMS/x86_64
 ```
 
-Move the Slurm rpms for installation for all nodes.
+Move the Slurm rpms for installation for all nodes:
 
 ```
 mkdir /nfsshare/slurm-rpms
 cp * /nfsshare/slurm-rpms
 ```
 
-On every node, install these rpms.
+On every node, install these rpms:
 
 ```
 yum --nogpgcheck localinstall * -y
 ```
 
-On the __master__ node,
+On the __master__ node:
 
 ```
-cd /etc/slurm
-vim slurm.conf
+vim /etc/slurm/slurm.conf
 ```
 
-Paster the slurm.conf in Configs and paste it into `slurm.conf`.
+Paste the slurm.conf in Configs and paste it into `slurm.conf`.
 
 Notice: we manually add lines under #COMPUTE NODES.
 ```
@@ -157,14 +156,14 @@ NodeName=node1 NodeAddr=10.0.1.6 CPUs=1 State=UNKNOWN
 NodeName=node2 NodeAddr=10.0.1.7 CPUs=1 State=UNKNOWN
 ```
 
-Now the __master__ node has the slurm.conf correctly, we need to send this file to the other compute nodes.
+Now the __master__ node has the slurm.conf correctly, we need to send this file to the other compute nodes:
 
 ```
 scp /etc/slurm/slurm.conf root@10.0.1.6:/etc/slurm/
 scp /etc/slurm/slurm.conf root@10.0.1.7:/etc/slurm/
 ```
 
-On the __master__ node, make sure that the __master__ has all the right configurations and files.
+On the __master__ node, make sure that the __master__ has all the right configurations and files:
 
 ```
 mkdir /var/spool/slurmctld
@@ -176,7 +175,7 @@ touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 ```
 
-On the computing nodes __node[1-2]__, make sure that all the computing nodes have the right configurations and files.
+On the computing nodes __node[1-2]__, make sure that all the computing nodes have the right configurations and files:
 
 ```
 mkdir /var/spool/slurmd
@@ -186,7 +185,7 @@ touch /var/log/slurm/slurmd.log
 chown slurm: /var/log/slurm/slurmd.log
 ```
 
-Use the following command to make sure that `slurmd` is configured properly.
+Use the following command to make sure that `slurmd` is configured properly:
 
 ```
 slurmd -C
@@ -242,9 +241,100 @@ systemctl start slurmctld.service
 systemctl status slurmctld.service
 ```
 
+### Setting up MariaDB database: master
 
+Install MariaDB:
 
+```
+yum install mariadb-server mariadb-devel -y
+```
 
+Start the MariaDB service:
 
+```
+systemctl enable mariadb
+systemctl start mariadb
+systemctl status mariadb
+```
 
-Reference: [slothparadise.com](https://www.slothparadise.com/how-to-install-slurm-on-centos-7-cluster/)
+Create the Slurm database user:
+
+```
+mysql
+```
+
+In mariaDB:
+
+```mysql
+MariaDB[(none)]> CREATE USER 'slurm'@'10.0.1.5' IDENTIFIED BY '1234';
+MariaDB[(none)]> GRANT ALL ON slurm_acct_db.* TO 'slurm'@'10.0.1.5';
+MariaDB[(none)]> FLUSH PRIVILEGES;
+MariaDB[(none)]> CREATE DATABASE slurm_acct_db;
+MariaDB[(none)]> quit;
+```
+
+Verify the databases grants for the _slurm_ user:
+
+```
+mysql -p -u slurm
+```
+
+Tpye password for slurm: `1234`. In mariaDB:
+
+```mysql
+MariaDB[(none)]> show grants;
+MariaDB[(none)]> quit;
+```
+
+Create slurmdbd configuration file:
+
+```
+vim /etc/slurm/slurmdbd.conf
+```
+
+Set up files and permissions:
+
+```
+chown slurm: /etc/slurm/slurmdbd.conf
+chmod 600 /etc/slurm/slurmdbd.conf
+touch /var/log/slurm/slurmdbd.log
+chown slurm: /var/log/slurm/slurmdbd.log
+```
+
+Paste the slurmdbd.conf in Configs and paste it into `slurmdbd.conf`.
+
+Some variables are:
+
+```
+DbdAddr=localhost
+DbdHost=localhost
+DbdPort=6819
+StoragePass=1234
+StorageLoc=slurm_acct_db
+```
+
+Open port `6819`:
+
+```
+firewall-cmd --permanent --zone=public --add-port=6819/udp
+firewall-cmd --permanent --zone=public --add-port=6819/tcp
+firewall-cmd --reload
+```
+
+Try to run _slurndbd_ manually to see the log:
+
+```
+slurmdbd -D -vvv
+```
+
+Terminate the process by Control+C when the testing is OK.
+
+Start the `slurmdbd` service:
+
+```
+systemctl enable slurmdbd
+systemctl start slurmdbd
+systemctl status slurmdbd
+```
+
+Reference: [slothparadise.com](https://www.slothparadise.com/how-to-install-slurm-on-centos-7-cluster/), [Niflheim](https://wiki.fysik.dtu.dk/niflheim/Slurm_database), [gabrieleiannetti](https://github.com/gabrieleiannetti/slurm_cluster_wiki/wiki/Installing-a-Slurm-Cluster)
