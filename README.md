@@ -142,4 +142,109 @@ On every node, install these rpms.
 yum --nogpgcheck localinstall * -y
 ```
 
+On the __master__ node,
+
+```
+cd /etc/slurm
+vim slurm.conf
+```
+
+Paster the slurm.conf in Configs and paste it into `slurm.conf`.
+
+Notice: we manually add lines under #COMPUTE NODES.
+```
+NodeName=node1 NodeAddr=10.0.1.6 CPUs=1 State=UNKNOWN
+NodeName=node2 NodeAddr=10.0.1.7 CPUs=1 State=UNKNOWN
+```
+
+Now the __master__ node has the slurm.conf correctly, we need to send this file to the other compute nodes.
+
+```
+scp /etc/slurm/slurm.conf root@10.0.1.6:/etc/slurm/
+scp /etc/slurm/slurm.conf root@10.0.1.7:/etc/slurm/
+```
+
+On the __master__ node, make sure that the __master__ has all the right configurations and files.
+
+```
+mkdir /var/spool/slurmctld
+chown slurm: /var/spool/slurmctld
+chmod 755 /var/spool/slurmctld
+touch /var/log/slurm/slurmctld.log
+chown slurm: /var/log/slurm/slurmctld.log
+touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
+chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
+```
+
+On the computing nodes __node[1-2]__, make sure that all the computing nodes have the right configurations and files.
+
+```
+mkdir /var/spool/slurmd
+chown slurm: /var/spool/slurmd
+chmod 755 /var/spool/slurmd
+touch /var/log/slurm/slurmd.log
+chown slurm: /var/log/slurm/slurmd.log
+```
+
+Use the following command to make sure that `slurmd` is configured properly.
+
+```
+slurmd -C
+```
+
+You should get something like this:
+
+```
+NodeName=node1 CPUs=4 Boards=1 SocketsPerBoard=1 CoresPerSocket=4 ThreadsPerCore=1 RealMemory=990 UpTime=0-07:45:41
+```
+
+Disable the firewall on the computing nodes __node[1-2]__:
+
+```
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
+On the __master__ node, open the default ports that Slurm uses:
+
+```
+firewall-cmd --permanent --zone=public --add-port=6817/udp
+firewall-cmd --permanent --zone=public --add-port=6817/tcp
+firewall-cmd --permanent --zone=public --add-port=6818/udp
+firewall-cmd --permanent --zone=public --add-port=6818/tcp
+firewall-cmd --reload
+```
+
+If the port freeing does not work, stop the firewall for testing.
+
+Sync clocks on the cluster. On every node:
+
+```
+yum install ntp -y
+chkconfig ntpd on
+ntpdate pool.ntp.org
+systemctl start ntpd
+```
+
+On the computing nodes __node[1-2]__:
+
+```
+systemctl enable slurmd.service
+systemctl start slurmd.service
+systemctl status slurmd.service
+```
+
+On the __master__ node:
+
+```
+systemctl enable slurmctld.service
+systemctl start slurmctld.service
+systemctl status slurmctld.service
+```
+
+
+
+
+
+
 Reference: [slothparadise.com](https://www.slothparadise.com/how-to-install-slurm-on-centos-7-cluster/)
