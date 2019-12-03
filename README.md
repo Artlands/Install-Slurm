@@ -301,7 +301,7 @@ Set up files and permissions:
 
 ```
 chown slurm: /etc/slurm/slurmdbd.conf
-chmod 600 /etc/slurm/slurmdbd.conf
+chmod 755 /etc/slurm/slurmdbd.conf
 touch /var/log/slurm/slurmdbd.log
 chown slurm: /var/log/slurm/slurmdbd.log
 ```
