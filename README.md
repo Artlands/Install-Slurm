@@ -12,7 +12,7 @@ List of master node and computing nodes within the cluster.
 |node1   |10.0.1.6|
 |node2   |10.0.1.7|
 
-### (Optinal) Delete failed installation of Slurm
+### (Optional) Delete failed installation of Slurm
 
 Remove database.
 
@@ -100,5 +100,46 @@ remunge
 ```
 
 If you encounter no errors, then Munge is working as expected.
+
+### Install Slurm
+
+Install a few dependencies.
+
+```
+yum install openssl openssl-devel pam-devel numactl numactl-devel hwloc hwloc-devel lua lua-devel readline-devel rrdtool-devel ncurses-devel man2html libibmad libibumad -y
+```
+
+Download the latest version of Slurm in the shared folder.
+
+```
+cd /nfsshare
+wget https://download.schedmd.com/slurm/slurm-19.05.4.tar.bz2
+```
+
+If you don't have `rpmbuild` yet.
+
+```
+yum install rpm-build
+rpmbuild -ta slurm-19.05.4.tar.bz2
+```
+
+Check the rpms created by `rpmbuild`.
+
+```
+cd /root/rpmbuild/RPMS/x86_64
+```
+
+Move the Slurm rpms for installation for all nodes.
+
+```
+mkdir /nfsshare/slurm-rpms
+cp * /nfsshare/slurm-rpms
+```
+
+On every node, install these rpms.
+
+```
+yum --nogpgcheck localinstall * -y
+```
 
 Reference: [slothparadise.com](https://www.slothparadise.com/how-to-install-slurm-on-centos-7-cluster/)
