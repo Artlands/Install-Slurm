@@ -265,8 +265,8 @@ mysql
 In mariaDB:
 
 ```mysql
-MariaDB[(none)]> CREATE USER 'slurm'@'10.0.1.5' IDENTIFIED BY '1234';
-MariaDB[(none)]> GRANT ALL ON slurm_acct_db.* TO 'slurm'@'10.0.1.5';
+MariaDB[(none)]> CREATE USER 'slurm'@'localhost' IDENTIFIED BY '1234';
+MariaDB[(none)]> GRANT ALL ON slurm_acct_db.* TO 'slurm'@'localhost';
 MariaDB[(none)]> FLUSH PRIVILEGES;
 MariaDB[(none)]> CREATE DATABASE slurm_acct_db;
 MariaDB[(none)]> quit;
