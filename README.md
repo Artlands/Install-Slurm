@@ -171,13 +171,13 @@ scp /etc/slurm/slurm.conf root@10.0.1.7:/etc/slurm/
 On the __master__ node, make sure that the __master__ has all the right configurations and files:
 
 ```
-mkdir /var/spool/slurmctld
-chown slurm: /var/spool/slurmctld
-chmod 755 /var/spool/slurmctld
-touch /var/log/slurm/slurmctld.log
-chown slurm: /var/log/slurm/slurmctld.log
-touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
-chown slurm: /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
+mkdir /var/spool/slurm
+chown slurm: /var/spool/slurm/
+chmod 755 /var/spool/slurm/
+touch /var/log/slurmctld.log
+chown slurm: /var/log/slurmctld.log
+touch /var/log/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
+chown slurm: /var/log/slurm_jobacct.log /var/log/slurm_jobcomp.log
 ```
 
 On the computing nodes __node[1-2]__, make sure that all the computing nodes have the right configurations and files:
@@ -216,6 +216,8 @@ firewall-cmd --permanent --zone=public --add-port=6817/udp
 firewall-cmd --permanent --zone=public --add-port=6817/tcp
 firewall-cmd --permanent --zone=public --add-port=6818/udp
 firewall-cmd --permanent --zone=public --add-port=6818/tcp
+firewall-cmd --permanent --zone=public --add-port=6819/udp
+firewall-cmd --permanent --zone=public --add-port=6819/tcp
 firewall-cmd --reload
 ```
 
