@@ -240,14 +240,6 @@ systemctl start slurmd.service
 systemctl status slurmd.service
 ```
 
-On the __master__ node:
-
-```
-systemctl enable slurmctld.service
-systemctl start slurmctld.service
-systemctl status slurmctld.service
-```
-
 ### Setting up MariaDB database: master
 
 Install MariaDB:
@@ -320,14 +312,6 @@ StoragePass=1234
 StorageLoc=slurm_acct_db
 ```
 
-Open port `6819`:
-
-```
-firewall-cmd --permanent --zone=public --add-port=6819/udp
-firewall-cmd --permanent --zone=public --add-port=6819/tcp
-firewall-cmd --reload
-```
-
 Try to run _slurndbd_ manually to see the log:
 
 ```
@@ -342,6 +326,14 @@ Start the `slurmdbd` service:
 systemctl enable slurmdbd
 systemctl start slurmdbd
 systemctl status slurmdbd
+```
+
+On the __master__ node:
+
+```
+systemctl enable slurmctld.service
+systemctl start slurmctld.service
+systemctl status slurmctld.service
 ```
 
 Reference: [slothparadise](https://www.slothparadise.com/how-to-install-slurm-on-centos-7-cluster/), [Niflheim](https://wiki.fysik.dtu.dk/niflheim/Slurm_database), [gabrieleiannetti](https://github.com/gabrieleiannetti/slurm_cluster_wiki/wiki/Installing-a-Slurm-Cluster)
