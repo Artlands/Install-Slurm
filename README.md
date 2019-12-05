@@ -265,8 +265,8 @@ mysql
 In mariaDB:
 
 ```mysql
-MariaDB[(none)]> CREATE USER 'slurm'@'localhost' IDENTIFIED BY '1234';
-MariaDB[(none)]> GRANT ALL ON slurm_acct_db.* TO 'slurm'@'localhost';
+MariaDB[(none)]> GRANT ALL ON slurm_acct_db.* TO 'slurm'@'localhost' IDENTIFIED BY '1234' with grant option;
+MariaDB[(none)]> SHOW VARIABLES LIKE 'have_innodb';
 MariaDB[(none)]> FLUSH PRIVILEGES;
 MariaDB[(none)]> CREATE DATABASE slurm_acct_db;
 MariaDB[(none)]> quit;
@@ -285,6 +285,25 @@ MariaDB[(none)]> show grants;
 MariaDB[(none)]> quit;
 ```
 
+Create a new file /etc/my.cnf.d/innodb.cnf containing:
+```
+[mysqld]
+innodb_buffer_pool_size=1024M
+innodb_log_file_size=64M
+innodb_lock_wait_timeout=900
+```
+To implement this change you have to shut down the database and move/remove logfiles:
+```
+systemctl stop mariadb
+mv /var/lib/mysql/ib_logfile? /tmp/
+systemctl start mariadb
+```
+
+You can check the current setting in MySQL like so:
+```
+MariaDB[(none)]> SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+```
+
 Create slurmdbd configuration file:
 
 ```
@@ -295,9 +314,9 @@ Set up files and permissions:
 
 ```
 chown slurm: /etc/slurm/slurmdbd.conf
-chmod 755 /etc/slurm/slurmdbd.conf
-touch /var/log/slurm/slurmdbd.log
-chown slurm: /var/log/slurm/slurmdbd.log
+chmod 600 /etc/slurm/slurmdbd.conf
+touch /var/log/slurmdbd.log
+chown slurm: /var/log/slurmdbd.log
 ```
 
 Paste the slurmdbd.conf in Configs and paste it into `slurmdbd.conf`.
