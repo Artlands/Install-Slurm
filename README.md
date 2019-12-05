@@ -183,9 +183,9 @@ chown slurm: /var/log/slurm_jobacct.log /var/log/slurm_jobcomp.log
 On the computing nodes __node[1-2]__, make sure that all the computing nodes have the right configurations and files:
 
 ```
-mkdir /var/spool/slurmd
-chown slurm: /var/spool/slurmd
-chmod 755 /var/spool/slurmd
+mkdir /var/spool/slurm
+chown slurm: /var/spool/slurm
+chmod 755 /var/spool/slurm
 touch /var/log/slurm/slurmd.log
 chown slurm: /var/log/slurm/slurmd.log
 ```
