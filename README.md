@@ -1,3 +1,5 @@
+
+
 ### Introduction
 
 Install Slurm on CentOS-7 Virtual Cluster.
@@ -35,7 +37,7 @@ Delete the users and corresponding folders:
 
 ```
 userdel -r slurm
-suerdel -r munge
+userdel -r munge
 ```
 
 ### Create the global users
